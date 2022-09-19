@@ -1,0 +1,46 @@
+form {
+    .actions {
+      background: #f5f5f5 0% 0% no-repeat padding-box;
+      opacity: 1;
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      height: 71px;
+      .seleccionar {
+        color: #666666;
+        box-shadow: 0px 3px 6px #00000029;
+        //   height: 45px;
+        font-weight: 400;
+      }
+      button {
+        margin: 10px;
+      }
+      div {
+        display: flex;
+        height: 100%;
+        align-items: center;
+      }
+    }
+    .info-file-chooser {
+      color: #666666;
+    }
+    * {
+      display: block;
+    }
+    .nombres {
+      max-height: 100px;
+      overflow: auto;
+      small {
+        &:hover {
+          cursor: pointer;
+          color: gray;
+        }
+        text-align: center;
+        text-decoration: underline;
+        color: #0099ff;
+      }
+    }
+  }
+  

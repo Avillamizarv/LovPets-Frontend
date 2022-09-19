@@ -1,0 +1,229 @@
+<!--Formulario de creación y edición: Solicitar adopción-->
+<div *ngIf="!data?.viewMode && !viewModeUsuario">
+  <form [formGroup]="form">
+    <div class="container">
+      <!--Condiciones -->
+      <div class="col condiciones">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Condiciones para la mascota</mat-label>
+          <textarea
+            id="condiciones"
+            matInput
+            maxlength="400"
+            formControlName="condiciones"
+            cols="100"
+            rows="5"
+            required
+            placeholder="Digite las condiciones que tendrá la mascota"
+          >
+          </textarea>
+          <mat-error *ngIf="form.controls.condiciones.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+
+        <!--Tiene otras mascotas-->
+        <div class="col otrasMascotas">
+          <mat-label class="label">¿Tiene otras mascotas?</mat-label>
+          <mat-radio-group
+            aria-label="Seleccione una opción"
+            formControlName="otrasMascotas"
+          >
+            <mat-radio-button [value]="true">Sí</mat-radio-button>
+            <mat-radio-button [value]="false">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <!--mascotas-->
+        <div class="col mascotas">
+          <mat-form-field appearance="fill" class="formControl">
+            <mat-label>¿Cuáles?</mat-label>
+            <input
+              [placeholder]="'Digite cuáles son sus mascotas'"
+              formControlName="mascotas"
+              matInput
+              type="text"
+              [maxlength]="200"
+            />
+            <mat-icon matPrefix> format_list_bulleted </mat-icon>
+            <mat-error *ngIf="form.controls.condiciones.invalid">
+              Este campo es obligatorio.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!--Modo visualización de solicitudes por publicación: Ver solicitudes-->
+<div *ngIf="data?.viewMode && !viewModeUsuario">
+  <div *ngFor="let solic of solicitudesPub">
+    <mat-card class="gro0ve">
+      <div class="contenedor-datos">
+        <div class="item">
+          <div class="label">Nombre solicitante:</div>
+          <div class="value">
+            {{ solic.nombreUsuario }}
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">Dirección:</div>
+          <div class="value">{{ solic.direccionUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Ciudad:</div>
+          <div class="value">{{ solic.nombreCiudadUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Teléfono:</div>
+          <div class="value">{{ solic.telefonoUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Correo:</div>
+          <div class="value">{{ solic.correoUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Condiciones para la mascota:</div>
+          <div class="value">{{ solic.condiciones }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Otras mascotas:</div>
+          <div class="value">
+            {{ solic.mascotas ? solic.mascotas : "No registrado" }}
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">Fecha registro:</div>
+          <div class="value">
+            {{ solic.fechaRegistro | date: "dd/MM/yyyy" }}
+          </div>
+        </div>
+      </div>
+      <div class="actions-buttons" *ngIf="data?.pubsUsuario">
+        <div class="buttons">
+          <button
+            class="action-purple"
+            mat-raised-button
+            color="primary"
+            type="button"
+            [title]="'Rechazar solicitud'"
+            (click)="rechazarSolicitud(solic.id)"
+          >
+            Rechazar
+          </button>
+          <button
+            class="action-purple"
+            mat-raised-button
+            color="primary"
+            type="button"
+            [title]="'Aceptar solicitud'"
+            (click)="aceptarSolicitud(solic.id)"
+          >
+            Aceptar
+          </button>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
+<!--Modo de visualización de solicitudes por usuario: Mis solicitudes-->
+<div *ngIf="viewModeUsuario">
+  <mat-card>
+    <div class="flex">
+      <!--Imagen de la mascota-->
+      <div class="imgMascota">
+        <img [alt]="'Imágen Mascota'" [src]="solicitud.imagenB64 | safeUrl" />
+      </div>
+      <div class="contenedor-datos">
+        <div>
+          <div class="item">
+            <div class="label center">Mascota</div>
+          </div>
+          <div class="item">
+            <div class="label">Nombre:</div>
+            <div class="value">
+              {{ solicitud.nombreMascota }}
+            </div>
+          </div>
+          <div class="item">
+            <div class="label">Responsable:</div>
+            <div class="value">{{ solicitud.nombreUsuarioPublicacion }}</div>
+          </div>
+          <div class="item">
+            <div class="label">Teléfono:</div>
+            <div class="value">{{ solicitud.telefonoUsuarioPublicacion }}</div>
+          </div>
+          <div class="item">
+            <div class="label">Correo:</div>
+            <div class="value">{{ solicitud.correoUsuarioPublicacion }}</div>
+          </div>
+
+          <div class="item">
+            <div class="label">Estado:</div>
+            <div class="value">
+              {{
+                solicitud.estado == 1
+                  ? "Aprobada"
+                  : solicitud.estado == 0
+                  ? "Rechazada"
+                  : solicitud.estado == 2
+                  ? "En espera"
+                  : "Publicación cerrada"
+              }}
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="label center">Detalle de mi solicitud</div>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="label">Condiciones para la mascota:</div>
+          <div class="value">{{ solicitud.condiciones }}</div>
+        </div>
+
+        <div class="item">
+          <div class="label">Otras mascotas:</div>
+          <div class="value">
+            {{ solicitud.mascotas ? solicitud.mascotas : "No registrado" }}
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="label">Fecha de registro:</div>
+          <div class="value">
+            {{ solicitud.fechaRegistro | date: "dd/MM/yyyy" }}
+          </div>
+        </div>
+
+        <div class="actions-buttons-vertical">
+          <div>
+            <button
+              class="action-purple"
+              mat-raised-button
+              color="primary"
+              type="button"
+              [title]="'Editar solicitud'"
+              (click)="editarSolicitud(solicitud)"
+            >
+              Editar solicitud
+            </button>
+          </div>
+          <div>
+            <button
+              class="action-purple"
+              mat-raised-button
+              color="primary"
+              type="button"
+              [title]="'Eliminar solicitud'"
+              (click)="eliminarSolicitud(solicitud.nombreMascota, solicitud.id)"
+            >
+              Eliminar solicitud
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

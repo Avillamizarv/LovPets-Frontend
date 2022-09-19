@@ -1,0 +1,279 @@
+<!--Mis publicaciones-Publicaciones-->
+<div *ngIf="viewMode && !data?.viewMode">
+  <mat-card>
+    <div class="flex">
+      <!--Imagen de la mascota-->
+      <div class="imgMascota">
+        <img [alt]="'Imágen Mascota'" [src]="publicacion.imagenB64 | safeUrl" />
+      </div>
+      <div class="contenedor-datos">
+        <div class="item">
+          <div class="label">Nombre:</div>
+          <div class="value">
+            {{ publicacion.nombre }}
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">Edad:</div>
+          <div class="value">
+            {{
+              publicacion.edad + " " + publicacion.unidadEdad ?? "No registrado"
+            }}
+          </div>
+        </div>
+        <div class="item">
+          <div class="label">Género:</div>
+          <div class="value">{{ publicacion.genero ?? "No registrado" }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Raza:</div>
+          <div class="value">{{ publicacion.raza ?? "No registrado" }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Gustos:</div>
+          <div class="value">{{ publicacion.gustos ?? "No registrado" }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Observaciones:</div>
+          <div class="value">{{ publicacion.observaciones }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Responsable:</div>
+          <div class="value">{{ publicacion.nombreUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Dirección:</div>
+          <div class="value">{{ publicacion.direccionUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Ciudad:</div>
+          <div class="value">{{ publicacion.nombreCiudadUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Teléfono:</div>
+          <div class="value">{{ publicacion.telefonoUsuario }}</div>
+        </div>
+        <div class="item">
+          <div class="label">Correo:</div>
+          <div class="value">{{ publicacion.correoUsuario }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="actions-buttons">
+      <button
+        [disabled]="pubsUsuario"
+        class="action-purple"
+        mat-raised-button
+        color="primary"
+        type="button"
+        [title]="'Solicitar adopción'"
+        (click)="
+          solicitarAdopcion(publicacion.id, publicacion.id, publicacion.nombre)
+        "
+      >
+        Solicitar adopción
+      </button>
+      <button
+        class="action-purple"
+        mat-raised-button
+        color="primary"
+        type="button"
+        [title]="'Ver solicitudes'"
+        (click)="verSolicitudes(publicacion.nombre, publicacion.id)"
+      >
+        Ver solicitudes
+      </button>
+    </div>
+
+    <!--Acciones de actualizar y eliminar una publicación-->
+    <div class="actions-buttons" *ngIf="pubsUsuario">
+      <button
+        class="action-purple"
+        mat-raised-button
+        color="primary"
+        type="button"
+        [title]="'Actualizar publicación'"
+        (click)="actualizarPub(publicacion)"
+      >
+        Actualizar
+      </button>
+      <button
+        class="action-purple"
+        mat-raised-button
+        color="primary"
+        type="button"
+        [title]="'Eliminar publicación'"
+        (click)="eliminarPub(publicacion.id, publicacion.nombre)"
+      >
+        Eliminar
+      </button>
+    </div>
+  </mat-card>
+</div>
+<!--Formulario de creación y edición-->
+<div *ngIf="!data?.viewMode && !viewMode">
+  <form [formGroup]="form">
+    <div class="container">
+      <!--Nombre -->
+      <div class="col nombre">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Nombre</mat-label>
+          <input
+            [placeholder]="'Digite el nombre de la mascota'"
+            formControlName="nombre"
+            matInput
+            type="text"
+            oninput="this.value=this.value.toUpperCase();"
+            required
+            [maxlength]="100"
+          />
+          <mat-icon matPrefix> pets </mat-icon>
+          <mat-error *ngIf="form.controls.nombre.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Tipo-->
+      <div class="col tipo">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="idTipoMascota">
+            <mat-option
+              *ngFor="let tipoMascota of tiposMascota"
+              [value]="tipoMascota.id"
+            >
+              {{ tipoMascota.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>format_list_bulleted</mat-icon>
+          <mat-error *ngIf="form.controls.idTipoMascota.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Género-->
+      <div class="col genero">
+        <mat-form-field appearance="fill" class="formControl twoFields">
+          <mat-label>Género</mat-label>
+          <mat-select formControlName="genero">
+            <mat-option *ngFor="let genero of generos" [value]="genero.nombre">
+              {{ genero.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix> format_list_bulleted </mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!--Edad-->
+      <div class="col edad">
+        <mat-form-field appearance="fill" class="formControl twoFields">
+          <mat-label>Edad</mat-label>
+          <input
+            [placeholder]="'Digite la edad'"
+            formControlName="edad"
+            matInput
+            type="text"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'');"
+            [maxlength]="2"
+          />
+          <mat-select formControlName="unidadEdad">
+            <mat-option
+              *ngFor="let unidadTiempo of unidadesTiempo"
+              [value]="unidadTiempo.nombre"
+            >
+              {{ unidadTiempo.nombre }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix> tag </mat-icon>
+          <mat-error *ngIf="form.controls.edad.hasError('edadIncorrecta')">
+            La edad debe ser mayor a 0.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Raza-->
+      <div class="col raza">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Raza</mat-label>
+          <input
+            [placeholder]="'Digite la raza'"
+            formControlName="raza"
+            matInput
+            type="text"
+            oninput="this.value=this.value.toUpperCase();"
+            [maxlength]="100"
+          />
+          <mat-icon matPrefix> label_important </mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!--Gustos-->
+      <div class="col gustos">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Gustos</mat-label>
+          <input
+            [placeholder]="'Digite los gustos de la mascota'"
+            formControlName="raza"
+            matInput
+            type="text"
+            oninput="this.value=this.value.toUpperCase();"
+            [maxlength]="100"
+          />
+          <mat-icon matPrefix> bubble_chart </mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Observaciones -->
+      <div class="col observaciones">
+        <mat-form-field color="primary" appearance="fill">
+          <mat-label>Observaciones</mat-label>
+          <textarea
+            id="observaciones"
+            matInput
+            maxlength="400"
+            formControlName="observaciones"
+            cols="100"
+            rows="5"
+            required
+            placeholder="Digite las observaciones"
+          >
+          </textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="imagen">
+        <mat-label
+          [ngClass]="{
+            'mat-error':
+              form.controls.imagenB64.invalid && form.controls.imagenB64.touched
+          }"
+        >
+          Imágen (Solo pdf, jpg, jpeg)
+        </mat-label>
+        <app-selector-archivos
+          *ngIf="!viewMode"
+          (files)="cambiarImagen($event)"
+          [imgBase64]="form.controls.imagenB64.value"
+          [editMode]="true"
+          [accept]="tiposPermitidos"
+        >
+        </app-selector-archivos>
+        <mat-hint
+          *ngIf="
+            form.controls.imagenB64.invalid && form.controls.imagenB64.touched
+          "
+        >
+          <span class="mat-error tamano-error">
+            {{
+              form.controls.imagenB64.hasError("fileType")
+                ? "Sólo se admiten archivos en formato jpg, jpeg, png"
+                : "Debe seleccionar una imágen."
+            }}
+          </span>
+        </mat-hint>
+      </div>
+    </div>
+  </form>
+</div>

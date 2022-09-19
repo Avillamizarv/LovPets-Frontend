@@ -1,0 +1,156 @@
+<div class="top-menu">
+  <img class="img" src="./assets/logo.png" alt="Logo" />
+  <div class="actions">
+    <button
+      *ngIf="(inicioSesion && misPubsMode) || misSolicMode"
+      class="user-button"
+      mat-icon-button
+      color="primary"
+      type="button"
+      [title]="'Inicio'"
+      (click)="volverInicio()"
+    >
+      <mat-icon matPrefix>home</mat-icon>
+    </button>
+    <button
+      class="hide"
+      mat-raised-button
+      color="primary"
+      type="button"
+      [title]="'Publicar mascota'"
+      (click)="publicarAdopcion()"
+    >
+      <mat-icon matPrefix>add</mat-icon>
+      Publicar mascota
+    </button>
+    <button
+      class="hide"
+      mat-raised-button
+      color="primary"
+      type="button"
+      [title]="'Mis publicaciones'"
+      (click)="misPublicaciones()"
+    >
+      <mat-icon matPrefix>widgets</mat-icon>
+      Mis publicaciones
+    </button>
+    <button
+      class="hide"
+      mat-raised-button
+      color="primary"
+      type="button"
+      [title]="'Mis solicitudes'"
+      (click)="misSolicitudes()"
+    >
+      <mat-icon matPrefix>pets</mat-icon>
+      Mis solicitudes
+    </button>
+
+    <button
+      *ngIf="!inicioSesion"
+      class="user-button hide2"
+      mat-icon-button
+      color="primary"
+      type="button"
+      [title]="'Registrarse'"
+      (click)="registroUsuario()"
+    >
+      <mat-icon matPrefix>person_add</mat-icon>
+    </button>
+    <button
+      *ngIf="!inicioSesion"
+      class="user-button hide2"
+      mat-icon-button
+      color="primary"
+      type="button"
+      [title]="'Iniciar sesión'"
+      (click)="iniciarSesion()"
+    >
+      <mat-icon matPrefix>person</mat-icon>
+    </button>
+    <button
+      mat-button
+      [matMenuTriggerFor]="menuPerfil"
+      class="user-button"
+      *ngIf="inicioSesion"
+    >
+      <mat-icon [title]="'Adriana'">person</mat-icon>
+    </button>
+    <mat-menu #menuPerfil="matMenu">
+      <button mat-menu-item (click)="editarInfoPersonal()">
+        <mat-icon>person</mat-icon>
+        <span>Editar mi información</span>
+      </button>
+      <button mat-menu-item class="noPadding" (click)="cerrarSesion()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Cerrar sesión</span>
+      </button>
+    </mat-menu>
+
+    <div class="menu">
+      <button mat-button [matMenuTriggerFor]="menu" class="user-button">
+        <mat-icon [title]="'Menú'">dehaze</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button
+          mat-menu-item
+          class="hide3"
+          *ngIf="!inicioSesion"
+          (click)="iniciarSesion()"
+        >
+          <mat-icon>person</mat-icon>
+          <span>Iniciar sesión</span>
+        </button>
+        <button
+          mat-menu-item
+          class="hide3"
+          *ngIf="!inicioSesion"
+          (click)="registroUsuario()"
+        >
+          <mat-icon>person_add</mat-icon>
+          <span>Registrarse</span>
+        </button>
+        <button mat-menu-item (click)="publicarAdopcion()">
+          <mat-icon>add</mat-icon>
+          <span>Publicar mascota</span>
+        </button>
+        <button mat-menu-item (click)="misPublicaciones()">
+          <mat-icon>widgets</mat-icon>
+          <span>Mis publicaciones</span>
+        </button>
+        <button mat-menu-item class="noPadding" (click)="misSolicitudes()">
+          <mat-icon>pets</mat-icon>
+          <span>Mis solicitudes</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</div>
+<div class="body">
+  <mat-card class="container-banner" *ngIf="!misPubsMode && !misSolicMode">
+    <img class="banner" src="./assets/Banner.png" alt="Banner" />
+  </mat-card>
+  <mat-card>
+    <app-view-publicaciones
+      *ngIf="!misSolicMode"
+      [misPubsMode]="misPubsMode"
+    ></app-view-publicaciones>
+    <app-view-mis-solicitudes
+      *ngIf="misSolicMode"
+      [misSolicMode]="misSolicMode"
+    ></app-view-mis-solicitudes
+  ></mat-card>
+</div>
+<div class="footer">
+  <h1>Acerca de nosotros</h1>
+  <p>
+    LovPets es un proyecto académico que tiene como objetivo ofrecer una
+    plataforma mediante la cual se pueda facilitar el proceso de adopción de
+    mascotas.
+  </p>
+  <p>
+    <strong>Autores:</strong> Adriana Villamizar Vera, Andrés Felipe Valenzuela
+    Pardo
+  </p>
+  <p>2022</p>
+</div>

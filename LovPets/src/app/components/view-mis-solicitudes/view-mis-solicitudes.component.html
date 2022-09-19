@@ -1,0 +1,16 @@
+<mat-card-header>
+  <mat-card-title class="title"
+    ><strong>Mis solicitudes</strong></mat-card-title
+  >
+</mat-card-header>
+<mat-card-content>
+  <div class="card-deck-container mat-elevation-z4">
+    <div *ngFor="let solic of misSolicitudes">
+      <app-form-solicitud-adopcion
+        [solicitud]="solic"
+        [viewModeUsuario]="true"
+      >
+      </app-form-solicitud-adopcion>
+    </div>
+  </div>
+</mat-card-content>

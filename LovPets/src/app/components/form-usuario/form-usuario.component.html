@@ -1,0 +1,144 @@
+<!--Formulario de creación y edición de usuario: Registro-Actualizar información personal-->
+<div *ngIf="data?.insertMode || data?.editMode">
+  <form [formGroup]="form">
+    <div class="container">
+      <!--Nombre -->
+      <div class="col nombre">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Nombre</mat-label>
+          <input
+            [placeholder]="'Digite su nombre y apellidos'"
+            formControlName="nombre"
+            matInput
+            type="text"
+            [maxlength]="200"
+          /><mat-icon matPrefix> person </mat-icon>
+          <mat-error *ngIf="form.controls.nombre.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Dirección-->
+      <div class="col direccion">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label class="label">Dirección</mat-label>
+          <input
+            [placeholder]="'Digite su dirección'"
+            formControlName="direccion"
+            matInput
+            type="text"
+            [maxlength]="200"
+          /><mat-icon matPrefix> room </mat-icon>
+          <mat-error *ngIf="form.controls.direccion.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Ciudad-->
+      <div class="col filtro ciudad">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label>Ciudad</mat-label>
+          <input
+            type="text"
+            placeholder="Seleccione la ciudad"
+            aria-label="Ciudad"
+            matInput
+            formControlName="idCiudad"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option"
+            >
+              {{ option.nombre }}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-icon matPrefix>place</mat-icon>
+          <mat-error *ngIf="form.controls.idCiudad.invalid"
+            >Este campo es obligatorio.</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <!--Teléfono-->
+      <div class="col telefono">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label class="label">Teléfono</mat-label>
+          <input
+            [placeholder]="'Digite su teléfono'"
+            formControlName="telefono"
+            matInput
+            type="text"
+            [maxlength]="15"
+          /><mat-icon matPrefix> smartphone </mat-icon>
+          <mat-error *ngIf="form.controls.telefono.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Correo-->
+      <div class="col correo">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label class="label">Correo</mat-label>
+          <input
+            [placeholder]="'Digite su correo'"
+            formControlName="correo"
+            matInput
+            type="text"
+            [maxlength]="50"
+          /><mat-icon matPrefix> email </mat-icon>
+          <mat-error *ngIf="form.controls.correo.invalid">
+            {{
+              form.controls.correo.getError("required")
+                ? "Este campo es obligatorio."
+                : "El correo debe tener la forma example@example.com."
+            }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Contraseña-->
+      <div class="col contrasena" *ngIf="data?.insertMode">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label class="label">Contraseña</mat-label>
+          <input
+            [placeholder]="'Digite una contraseña'"
+            formControlName="contrasena"
+            matInput
+            type="text"
+            [maxlength]="50"
+          /><mat-icon matPrefix> password </mat-icon>
+          <mat-error *ngIf="form.controls.correo.invalid">
+            Este campo es obligatorio.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!--Confirmar contraseña-->
+      <div class="col confirma-contrasena" *ngIf="data?.insertMode">
+        <mat-form-field appearance="fill" class="formControl">
+          <mat-label class="label">Confirmar contraseña</mat-label>
+          <input
+            [placeholder]="'Digite nuevamente la contraseña'"
+            formControlName="confirmarContrasena"
+            matInput
+            type="text"
+            [maxlength]="50"
+          /><mat-icon matPrefix> password </mat-icon>
+          <mat-error *ngIf="form.controls.confirmarContrasena.invalid">
+            {{
+              form.controls.confirmarContrasena.hasError("confirmacionIncorrecta")
+                ? "Las contraseñas no coinciden."
+                : "Este campo es obligatorio."
+            }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+

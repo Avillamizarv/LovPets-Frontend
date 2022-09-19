@@ -1,0 +1,88 @@
+.imgMascota {
+  min-width: 250px;
+  min-height: 250px;
+  position: relative;
+  margin: 9px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.actions-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+.twoFields {
+  ::ng-deep .mat-form-field-infix {
+    display: flex !important;
+  }
+}
+.imagen {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif !important;
+  color: #666666;
+  flex-direction: column;
+  grid-column-start: 1;
+  grid-column-end: -1;
+}
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(170px, auto));
+  grid-auto-rows: minmax(10px, auto);
+  grid-gap: 12px;
+  grid-row-gap: 8px;
+  margin-bottom: 8px;
+  .mat-form-field {
+    width: 100%;
+    display: block;
+  }
+}
+.nombre,
+.edad {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.raza {
+  grid-column-start: 3;
+  grid-column-end: -1;
+}
+.gustos,
+.observaciones {
+  grid-column-start: 1;
+  grid-column-end: -1;
+}
+
+@media screen and(max-width: 590px) {
+  .flex {
+    display: block;
+  }
+}
+
+@media screen and(max-width: 810px) {
+  .container {
+    grid-template-columns: repeat(2, minmax(170px, auto));
+    .nombre {
+      grid-column-start: 1;
+      grid-column-end: -1;
+    }
+    .edad {
+      grid-column-start: 1;
+      grid-column-end: 2;
+    }
+    .raza {
+      grid-column-start: 2;
+      grid-column-end: -1;
+    }
+  }
+}
+@media screen and(max-width: 415px) {
+  .container {
+    grid-template-columns: repeat(1, minmax(170px, auto));
+    .nombre,
+    .edad,
+    .raza {
+      grid-column-start: 1;
+      grid-column-end: -1;
+    }
+  }
+}

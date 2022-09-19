@@ -1,0 +1,41 @@
+<form>
+  <div class="actions">
+    <button
+      type="button"
+      mat-raised-button
+      class="seleccionar"
+      (click)="ref.click()"
+      *ngIf="editMode"
+      [title]="imgBase64 ? 'Cambiar imágen' : 'Seleccionar imágen'"
+    >
+      {{ imgBase64 ? "Cambiar imágen" : "Seleccionar imágen" }}
+    </button>
+    <button
+      type="button"
+      mat-raised-button
+      class="seleccionar"
+      (click)="ref.click()"
+      *ngIf="!imgBase64 && !editMode"
+      [title]="'Seleccionar imágen'"
+    >
+      Seleccionar imágen
+    </button>
+  </div>
+  <div class="nombres">
+    <small
+      style="margin-top: 7px"
+      *ngFor="let arch of archivo"
+      (click)="openFile(arch)"
+    >
+      {{ arch.name }}</small
+    >
+  </div>
+  <input
+    style="display: none"
+    type="file"
+    [accept]="accept"
+    #ref
+    (change)="emitirArchivo($event)"
+    name="emitirArchivo"
+  />
+</form>

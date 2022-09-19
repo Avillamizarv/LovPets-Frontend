@@ -1,0 +1,79 @@
+@use "sass:math";
+$top-padding-actions: 10px;
+$padding-body: 32px;
+$padding-actions: 20px;
+.header {
+  background: #bd98c6;
+  color: black;
+  .title {
+    font-weight: bold;
+    font-size: 1.7rem;
+    letter-spacing: 2px;
+  }
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0px;
+  z-index: 9999;
+}
+.body {
+  padding: $padding-body;
+  padding-bottom: $padding-body - $top-padding-actions;
+  button:last-child {
+    margin-left: 10px;
+  }
+  .content {
+    word-wrap: break-word;
+  }
+}
+.bottom-padding-modal-form-uis {
+  padding-bottom: 3px !important;
+}
+
+.padding-view-mode {
+  padding: $padding-body !important;
+}
+
+.mat-raised-button.mat-primary {
+  margin: 0px;
+  background-color: #ab77b9;
+}
+
+@media screen and (max-width: 700px) {
+  .body {
+    padding: math.div($padding-body, 2);
+    padding-bottom: 16px - $top-padding-actions !important;
+  }
+  .padding-view-mode {
+    padding: math.div($padding-body, 2) !important;
+  }
+}
+
+.actions {
+  position: sticky;
+  bottom: 0px;
+  padding: $top-padding-actions $padding-actions $padding-actions
+    $padding-actions;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  z-index: 2;
+}
+
+::ng-deep .close button {
+  margin-top: 0px !important;
+  border: 3px solid white;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  mat-icon {
+    color: white;
+    font-weight: bold !important;
+  }
+}

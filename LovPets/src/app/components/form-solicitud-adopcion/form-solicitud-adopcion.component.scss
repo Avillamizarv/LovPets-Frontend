@@ -1,0 +1,55 @@
+.otrasMascotas {
+  font-family: "Open Sans", "Helvetica Neue", sans-serif !important;
+  color: #666666;
+  margin-bottom: 8px;
+  margin-top: 2px;
+  .label {
+    margin-right: 8px;
+  }
+}
+.mat-radio-button ~ .mat-radio-button {
+  margin-left: 16px;
+}
+.mat-card {
+  border: groove !important;
+  margin: 4px !important;
+}
+.actions-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  .buttons {
+    height: 100%;
+    .action-purple {
+      margin-right: 5px !important;
+      margin-top: 5px !important;
+    }
+  }
+}
+.imgMascota {
+  min-width: 250px;
+  min-height: 250px;
+  position: relative;
+  margin: 9px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.actions-buttons-vertical {
+  display: block;
+  margin: auto;
+  .mat-raised-button.mat-primary {
+    width: 90%;
+    margin: 8px !important;
+  }
+}
+.center {
+  margin: auto !important;
+  padding: 4px;
+}
+@media screen and(max-width: 590px) {
+  .flex {
+    display: block;
+  }
+}

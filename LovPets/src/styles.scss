@@ -1,0 +1,188 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  color: #9873a1;
+}
+.mat-card-header .mat-card-title {
+  font-size: 26px;
+  color: #9873a1;
+}
+.title-card-h {
+  display: flex;
+  justify-content: center !important;
+  text-align: center !important;
+}
+.actions-header {
+  display: flex;
+  justify-content: right;
+  padding: 10px 0px 10px 0px;
+  max-height: 45px;
+}
+.mat-form-field {
+  width: 100%;
+  display: block;
+}
+.d-flex {
+  display: flex;
+}
+.justify-content-center {
+  justify-content: center;
+}
+body {
+  margin: 0;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important;
+}
+.flex {
+  display: flex;
+}
+// .mat-card {
+//   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif !important;
+//   letter-spacing: 2px;
+// }
+.mat-card-content {
+  font-family: Roboto, "Open Sans", sans-serif;
+}
+.mat-datepicker-toggle-active {
+  color: #9873a1;
+}
+.mat-form-field.mat-focused .mat-form-field-label {
+  color: #9873a1;
+}
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: #9873a1;
+}
+.mat-snack-bar-container {
+  background-color: #9873a1;
+  color: black;
+}
+.mat-simple-snackbar-action button {
+  color: black;
+}
+
+.error {
+  background-color: rgb(207, 124, 124);
+}
+.mat-form-field-type-mat-native-select.mat-focused:not(.mat-form-field-invalid)
+  .mat-form-field-infix::after {
+  color: #9873a1;
+}
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #9873a1;
+}
+
+.mat-form-field-prefix .mat-icon {
+  color: #666666;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color: #9873a1 !important;
+}
+mat-form-field:not(.mat-form-field-invalid) {
+  color: #666666;
+}
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: rgba(0, 0, 0, 0.87);
+}
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: #9873a1;
+}
+.acciones-c {
+  flex: 0 0 180px;
+  gap: 6px;
+  ::ng-deep .mat-mini-fab {
+    height: 32px !important;
+    width: 32px !important;
+    margin: 0px;
+    mat-icon {
+      height: 20px;
+      width: 20px;
+      font-size: 20px;
+      margin-top: -9px;
+    }
+  }
+}
+.mat-dialog-container {
+  padding: 0px !important;
+}
+.mat-flat-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  background-color: #34b5be;
+  color: black;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  border-radius: 27px;
+  font-size: 20px;
+  height: 70%;
+  margin: auto;
+  margin-left: 5px;
+  letter-spacing: 2px;
+}
+.mat-stroked-button {
+  color: black;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  border-radius: 27px !important;
+  font-size: 20px;
+  height: 70%;
+}
+.mat-icon {
+  color: #773c86;
+  font-size: 25px;
+  font-weight: bolder;
+}
+.mat-icon-button.mat-primary {
+  height: 70%;
+  margin: auto;
+}
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+  border-color: #ab77b9;
+  transition: border-color;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: #ab77b9;
+}
+.contenedor-datos {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(1, minmax(230px, 1fr));
+  .item {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+    .label {
+      font-weight: bold;
+    }
+    div {
+      height: auto;
+      word-break: break-all;
+    }
+  }
+}
+.action-purple {
+  background-color: #ab77b9 !important;
+  margin: auto !important;
+}
+.mat-menu-content:not(:empty) {
+  padding: 8px;
+  background-color: black;
+  .mat-icon {
+    color: #773c86;
+    font-size: 25px;
+    font-weight: bolder;
+    line-height: 0.8;
+  }
+  button.mat-menu-item {
+    width: 100%;
+    background-color: #34b5be;
+    color: black;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+    margin-bottom: 8px;
+    border-radius: 5px;
+  }
+  .noPadding {
+    margin-bottom: 0px !important;
+  }
+}
