@@ -27,3 +27,8 @@
 .card-item {
   padding: 3px 3px 3px 3px;
 }
+@media screen and(max-width: 590px) {
+  .card-deck-container {
+    display: flow-root;
+  }
+}

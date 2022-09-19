@@ -67,14 +67,21 @@
     max-height: 10000px;
   }
   .imgMascota {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 230px;
+    max-height: 230px;
     position: relative;
     margin: 9px;
-    
+    img{
+      max-width: 230px;
+      max-height: 230px;
+    }
   }
-  .actions-buttons{
+  .actions-buttons {
     display: block;
+  }
+  .action-purple{
+    margin-bottom: 5px !important;
+    width: 90%;
   }
 }
 
@@ -95,11 +102,10 @@
     }
   }
   .imgMascota {
-    max-width: 250px;
-    max-height: 250px;
+    max-width: 230px;
+    max-height: 230px;
     position: relative;
     margin: 9px;
-    
   }
 }
 @media screen and(max-width: 415px) {
@@ -115,5 +121,22 @@
   .mat-card > :first-child,
   .mat-card-content > :first-child {
     max-height: 10000px;
+  }
+  .mat-card {
+    margin-bottom: 4px;
+  }
+  .imgMascota {
+    max-width: 230px;
+    max-height: 230px;
+    position: relative;
+    margin: 9px;
+    img{
+      max-width: 230px;
+      max-height: 230px;
+    }
+  }
+  .action-purple{
+    margin-bottom: 5px !important;
+    width: 90%;
   }
 }

@@ -52,4 +52,14 @@
   .flex {
     display: block;
   }
+  .imgMascota {
+    max-width: 230px;
+    max-height: 230px;
+    position: relative;
+    margin: 9px;
+    img {
+      width: 230px;
+      height: 230px;
+    }
+  }
 }
