@@ -72,15 +72,12 @@ export class SelectorArchivosComponent implements OnInit {
    *
    */
   emitirArchivo($event: any) {
-    console.log("emitir");
     this.archivo = $event?.target?.files;
     const estado = this.validarExtensiones();
-    console.log(estado);
+
     if (estado) {
-      console.log("entra a estado");
       if (this.archivo) {
         this.files.emit(this.archivo[0]);
-        console.log("Sí se emite");
       } else {
         this.files.emit(null);
       }
@@ -100,9 +97,13 @@ export class SelectorArchivosComponent implements OnInit {
   validarExtensiones() {
     let condition = true;
     if (this.archivo) {
-      console.log("entra a comparar");
-      console.log(this.archivo);
-      if (!(this.archivo[0].type && this.archivo[0].type !== '' && this.accept.includes(this.archivo[0].type))) {
+      if (
+        !(
+          this.archivo[0].type &&
+          this.archivo[0].type !== '' &&
+          this.accept.includes(this.archivo[0].type)
+        )
+      ) {
         condition = false;
       }
       return condition;

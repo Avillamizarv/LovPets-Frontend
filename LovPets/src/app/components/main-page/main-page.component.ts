@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CrudService } from 'src/app/common/services/crud.service';
+import { PublicacionAdopcionModel } from 'src/app/models/publicacion-adopcion-model';
 import { UsuarioModel } from 'src/app/models/usuario-model';
+import { PublicacionService } from 'src/app/service/publicacion.service';
 import { FormPublicacionAdopcionComponent } from '../form-publicacion-adopcion/form-publicacion-adopcion.component';
 import { FormUsuarioComponent } from '../form-usuario/form-usuario.component';
 import { InicioSesionComponent } from '../inicio-sesion/inicio-sesion.component';
@@ -50,12 +52,18 @@ export class MainPageComponent {
   subscriptionPublicar: Subscription;
 
   /**
+   * Variable que contiene la lista de publicaciones por usuario
+   * */
+  publicaciones: Observable<PublicacionAdopcionModel[]>;
+
+  /**
    * Contructor del componente
    * @param crudService - Servicio de crud.
    */
   constructor(
     private crudService: CrudService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private servicePub: PublicacionService
   ) {}
 
   /**Función para publicar una nueva mascota en adopción */
@@ -74,7 +82,6 @@ export class MainPageComponent {
         })
         .subscribe((res) => {
           if (res.estado) {
-            console.log('se sale');
           }
         });
     } else {
@@ -93,7 +100,24 @@ export class MainPageComponent {
         })
         .subscribe((res) => {
           if (res.estado) {
-            console.log('va a guardar la publicación');
+            const publicacion = res.data as PublicacionAdopcionModel;
+            publicacion.idUsuario = 1;
+            this.servicePub
+              .addPublicacion(publicacion)
+              .subscribe((response) => {
+                if (response) {
+                  this.openSnackBar(
+                    'Se realizó el registro de su publicación exitosamente.',
+                    'success'
+                  );
+                }
+                this.crudService.close(res.dialogRef);
+                if (!this.misPubsMode) {
+                  this.getAllPubs();
+                } else {
+                  this.getAllPubsByUser();
+                }
+              });
           }
         });
     }
@@ -117,12 +141,31 @@ export class MainPageComponent {
         })
         .subscribe((res) => {
           if (res.estado) {
-            console.log('se sale');
           }
         });
     } else {
       this.misPubsMode = true;
       this.misSolicMode = false;
+      this.getAllPubsByUser();
+    }
+  }
+
+  /**
+   * Función que se ejecuta para recargas las publicaciones por usuario
+   */
+  recargar() {
+    this.getAllPubsByUser();
+  }
+  /**
+   * Función para obtener todas las publicaciones de un usuario
+   */
+  getAllPubsByUser() {
+    this.publicaciones = this.servicePub.getAllPubsByUser(1);
+    if (!this.publicaciones) {
+      this.openSnackBar(
+        'No se encontraron publicaciones relacionadas a su usuario.',
+        'error'
+      );
     }
   }
 
@@ -143,9 +186,7 @@ export class MainPageComponent {
           maxWidth: '300px',
         })
         .subscribe((res) => {
-          if (res.estado) {
-            console.log('se sale');
-          }
+          this.crudService.close(res.dialogRef);
         });
     } else {
       this.misSolicMode = true;
@@ -157,8 +198,24 @@ export class MainPageComponent {
    * Función para volver al inicio
    */
   volverInicio() {
+    if (this.misPubsMode) {
+      this.getAllPubs();
+    }
     this.misPubsMode = false;
     this.misSolicMode = false;
+  }
+
+  /**
+   * Función para obtener todas las publicaciones
+   */
+  getAllPubs() {
+    this.publicaciones = this.servicePub.getAllPublicaciones();
+    if (!this.publicaciones) {
+      this.openSnackBar(
+        'No hay publicaciones de mascotas en adopción.',
+        'error'
+      );
+    }
   }
 
   iniciarSesion() {

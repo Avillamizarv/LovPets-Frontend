@@ -126,7 +126,7 @@
     </div>
   </div>
 </div>
-<div class="body">
+<div class="my-body">
   <mat-card class="container-banner" *ngIf="!misPubsMode && !misSolicMode">
     <img class="banner" src="./assets/Banner.png" alt="Banner" />
   </mat-card>
@@ -134,6 +134,8 @@
     <app-view-publicaciones
       *ngIf="!misSolicMode"
       [misPubsMode]="misPubsMode"
+      [publicaciones]="publicaciones"
+      (recargarLista)="recargar()"
     ></app-view-publicaciones>
     <app-view-mis-solicitudes
       *ngIf="misSolicMode"

@@ -51,9 +51,29 @@
   grid-column-start: 1;
   grid-column-end: -1;
 }
-
+.mat-card > :first-child,
+.mat-card-content > :first-child {
+  max-height: 400px;
+}
+.contenedor-datos {
+  min-height: 400px !important;
+}
 @media screen and(max-width: 590px) {
   .flex {
+    display: block;
+  }
+  .mat-card > :first-child,
+  .mat-card-content > :first-child {
+    max-height: 10000px;
+  }
+  .imgMascota {
+    max-width: 250px;
+    max-height: 250px;
+    position: relative;
+    margin: 9px;
+    
+  }
+  .actions-buttons{
     display: block;
   }
 }
@@ -74,6 +94,13 @@
       grid-column-end: -1;
     }
   }
+  .imgMascota {
+    max-width: 250px;
+    max-height: 250px;
+    position: relative;
+    margin: 9px;
+    
+  }
 }
 @media screen and(max-width: 415px) {
   .container {
@@ -84,5 +111,9 @@
       grid-column-start: 1;
       grid-column-end: -1;
     }
+  }
+  .mat-card > :first-child,
+  .mat-card-content > :first-child {
+    max-height: 10000px;
   }
 }

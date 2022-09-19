@@ -1,15 +1,26 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, Subscription } from 'rxjs';
 import { CrudService } from 'src/app/common/services/crud.service';
 import { PublicacionAdopcionModel } from 'src/app/models/publicacion-adopcion-model';
+import { SolicitudAdopcionModel } from 'src/app/models/solicitud-adopcion-model';
 import { TipoMascotaModel } from 'src/app/models/tipo-mascota-model';
 import { FileToBase64Pipe } from 'src/app/pipes/file-to-base-64.pipe';
+import { PublicacionService } from 'src/app/service/publicacion.service';
+import { SolicitudService } from 'src/app/service/solicitud.service';
 import { FormSolicitudAdopcionComponent } from '../form-solicitud-adopcion/form-solicitud-adopcion.component';
 import { NotRegisteredErrorComponent } from '../not-registered-error/not-registered-error.component';
 
@@ -36,6 +47,11 @@ export class FormPublicacionAdopcionComponent implements OnInit {
   @Input() pubsUsuario: boolean;
 
   /**
+   *Output de evento para recargar
+   */
+  @Output() recargar = new EventEmitter<boolean>();
+
+  /**
    * Variable del formulario
    */
   form: UntypedFormGroup;
@@ -48,10 +64,7 @@ export class FormPublicacionAdopcionComponent implements OnInit {
   /**
    * Variable que contiene la lista de tipos de mascota
    * */
-  tiposMascota: TipoMascotaModel[] = [
-    { id: 1, nombre: 'Perro' },
-    { id: 2, nombre: 'Gato' },
-  ];
+  tiposMascota: Observable<TipoMascotaModel[]>;
 
   /**
    * Variable que contiene la lista de géneros
@@ -83,13 +96,17 @@ export class FormPublicacionAdopcionComponent implements OnInit {
     },
     private fb: UntypedFormBuilder,
     private fileToBase64: FileToBase64Pipe,
-    private crudService: CrudService
+    private crudService: CrudService,
+    private servicePub: PublicacionService,
+    private snackbar: MatSnackBar,
+    private serviceSolic: SolicitudService
   ) {}
 
   /**
    * Función de acciones a tomar al iniciar el componente
    */
   ngOnInit(): void {
+    this.getTiposMascota();
     this.buildForm();
     this.edadChanges();
     if (this.data?.editMode) {
@@ -115,6 +132,13 @@ export class FormPublicacionAdopcionComponent implements OnInit {
       observaciones: [],
       imagenB64: ['', [Validators.required]],
     });
+  }
+
+  /**
+   * Función para obtener los tipos de mascota
+   */
+  getTiposMascota() {
+    this.tiposMascota = this.servicePub.getTiposMascota();
   }
 
   /**
@@ -148,9 +172,7 @@ export class FormPublicacionAdopcionComponent implements OnInit {
           maxWidth: '300px',
         })
         .subscribe((res) => {
-          if (res.estado) {
-            console.log('se sale');
-          }
+          this.crudService.close(res.dialogRef);
         });
     } else {
       this.subscriptionSolicitud = this.crudService
@@ -168,9 +190,20 @@ export class FormPublicacionAdopcionComponent implements OnInit {
           title: 'Solicitar adopción de ' + nombre,
           maxWidth: '800px',
         })
-        .subscribe((res) => {
-          if (res.estado) {
-            console.log('va a guardar la solicitud');
+        .subscribe((result) => {
+          if (result.estado) {
+            result.data.idUsuario = idUsuario;
+            this.serviceSolic
+              .addSolicitud(result.data as SolicitudAdopcionModel)
+              .subscribe((res) => {
+                if (res) {
+                  this.openSnackBar(
+                    'Se registró su solicitud exitosamente.',
+                    'success'
+                  );
+                  this.crudService.close(result.dialogRef);
+                }
+              });
           }
         });
     }
@@ -181,23 +214,32 @@ export class FormPublicacionAdopcionComponent implements OnInit {
    *
    */
   verSolicitudes(nombre: string, idPublicacion: number) {
-    this.crudService
-      .show({
-        component: FormSolicitudAdopcionComponent,
-        dataComponent: {
-          pubsUsuario: this.pubsUsuario,
-          insertMode: false,
-          viewMode: true,
-          idPublicacion: idPublicacion,
-        },
-        title: 'Solicitudes de adopción para ' + nombre,
-        maxWidth: '800px',
-      })
-      .subscribe((res) => {
-        if (res.estado) {
-          console.log('No hará nada');
-        }
-      });
+    this.serviceSolic.getSolicitudesByPub(idPublicacion).subscribe((res) => {
+      if (res) {
+        const solicitudesPub = res;
+        this.crudService
+          .show({
+            component: FormSolicitudAdopcionComponent,
+            dataComponent: {
+              pubsUsuario: this.pubsUsuario,
+              insertMode: false,
+              viewMode: true,
+              idPublicacion: idPublicacion,
+              solicitudesPub: solicitudesPub,
+            },
+            title: 'Solicitudes de adopción para ' + nombre,
+            maxWidth: '800px',
+          })
+          .subscribe((res) => {
+            this.crudService.close(res.dialogRef);
+          });
+      } else {
+        this.openSnackBar(
+          'Esta publicación no tiene solicitudes de adopción.',
+          'error'
+        );
+      }
+    });
   }
 
   /**
@@ -221,7 +263,16 @@ export class FormPublicacionAdopcionComponent implements OnInit {
       })
       .subscribe((res) => {
         if (res.estado) {
-          console.log('Va a actualizar');
+          this.servicePub.updatePublicacion(res.data).subscribe((response) => {
+            if (response) {
+              this.openSnackBar(
+                'Se actualizó la publicación esxitosamente',
+                'success'
+              );
+              this.crudService.close(res.dialogRef);
+              this.recargar.emit(true);
+            }
+          });
         }
       });
   }
@@ -246,9 +297,18 @@ export class FormPublicacionAdopcionComponent implements OnInit {
         title: 'Eliminar publicación de ' + nombre,
         maxWidth: '600px',
       })
-      .subscribe((res) => {
-        if (res.estado) {
-          console.log('se va a eliminar');
+      .subscribe((resp) => {
+        if (resp.estado) {
+          this.servicePub.deletePublicacion(idPublicacion).subscribe((res) => {
+            if (res) {
+              this.openSnackBar(
+                'Se eliminó la publicación exitosamente.',
+                'success'
+              );
+            }
+            this.crudService.close(resp.dialogRef);
+            this.recargar.emit(true);
+          });
         }
       });
   }
@@ -271,5 +331,17 @@ export class FormPublicacionAdopcionComponent implements OnInit {
   limpiarFormulario() {
     this.form.reset();
     this.form.controls.idUsuario.setValue(this.data?.publicacion.idUsuario);
+  }
+
+  /**
+   * Función para mostrar snackbars de notificaciones
+   */
+  openSnackBar(message: string, tipo: string) {
+    this.snackbar.open(message, 'Ok', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 5 * 1000,
+      panelClass: tipo,
+    });
   }
 }

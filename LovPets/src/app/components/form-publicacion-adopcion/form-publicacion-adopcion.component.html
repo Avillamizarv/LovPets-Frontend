@@ -68,7 +68,7 @@
         type="button"
         [title]="'Solicitar adopción'"
         (click)="
-          solicitarAdopcion(publicacion.id, publicacion.id, publicacion.nombre)
+          solicitarAdopcion(2, publicacion.id, publicacion.nombre)
         "
       >
         Solicitar adopción
@@ -123,7 +123,6 @@
             formControlName="nombre"
             matInput
             type="text"
-            oninput="this.value=this.value.toUpperCase();"
             required
             [maxlength]="100"
           />
@@ -140,7 +139,7 @@
           <mat-label>Tipo</mat-label>
           <mat-select formControlName="idTipoMascota">
             <mat-option
-              *ngFor="let tipoMascota of tiposMascota"
+              *ngFor="let tipoMascota of tiposMascota | async"
               [value]="tipoMascota.id"
             >
               {{ tipoMascota.nombre }}
@@ -202,7 +201,6 @@
             formControlName="raza"
             matInput
             type="text"
-            oninput="this.value=this.value.toUpperCase();"
             [maxlength]="100"
           />
           <mat-icon matPrefix> label_important </mat-icon>
@@ -215,10 +213,9 @@
           <mat-label>Gustos</mat-label>
           <input
             [placeholder]="'Digite los gustos de la mascota'"
-            formControlName="raza"
+            formControlName="gustos"
             matInput
             type="text"
-            oninput="this.value=this.value.toUpperCase();"
             [maxlength]="100"
           />
           <mat-icon matPrefix> bubble_chart </mat-icon>

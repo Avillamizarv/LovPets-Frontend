@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+
+  urlBackLovPets: 'https://lovpets.herokuapp.com/lovpets/api',
 };

@@ -200,6 +200,7 @@
         <div class="actions-buttons-vertical">
           <div>
             <button
+              [disabled]="!(solicitud.estado == 2)"
               class="action-purple"
               mat-raised-button
               color="primary"
