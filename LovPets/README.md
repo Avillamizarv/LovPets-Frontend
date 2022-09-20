@@ -1,4 +1,16 @@
-# AngluarFrontend
+# LovPrts
+
+Proyecto académico que tiene como finalidad ofrecer una plataforma en línea que facilite el proceso de adopción de mascotas.
+
+Autores: Adriana Villamizar Vera, Andrés Felipe Valenzuela Pardo
+Fecha: 19/09/2022
+Versión: 1.0.0
+
+Se encuentra desplegado en un servidor de heroku al cual se accede mediante el siguiente enlace:
+https://lov-pets.herokuapp.com/lovPets
+
+
+---------------------------------------------------------------------------------------------------
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.1.
 
