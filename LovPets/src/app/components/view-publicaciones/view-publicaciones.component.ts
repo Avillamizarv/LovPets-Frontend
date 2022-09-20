@@ -118,9 +118,8 @@ export class ViewPublicacionesComponent implements OnInit {
   onFiltroChange() {
     this.form.controls.idTipoMascota.valueChanges.subscribe((value) => {
       if (value != null) {
-        //LLAMO AL SERVICIO PARA FILTRAR Y OBTENER LAS PUBS
         const ciudad = this.form.controls.idCiudad.value;
-        this.getPubsFiltradas(ciudad.id, value);
+        this.getPubsFiltradas(ciudad?.id, value);
       }
     });
     this.form.controls.idCiudad.valueChanges.subscribe((value) => {

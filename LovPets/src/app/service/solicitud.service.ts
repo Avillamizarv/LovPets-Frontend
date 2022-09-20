@@ -76,7 +76,7 @@ export class SolicitudService {
       )
       .pipe(
         catchError((err) => {
-          this.openSnackBar('Hubo un error interno.', 'error');
+          this.openSnackBar('Usted ya tiene una solicitud de adopción para esta mascota.', 'error');
           return throwError(err);
         }),
         tap((res) => {
